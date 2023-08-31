@@ -30,9 +30,7 @@ class AuthRepository {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-    } catch (e) {
-      print(e);
-    }
+    } catch (_) {}
   }
 
   Future<void> signOut() async {

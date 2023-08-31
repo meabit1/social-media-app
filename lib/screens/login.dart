@@ -29,22 +29,24 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _EmailInput(),
-          const SizedBox(height: 20),
-          _PasswordInput(),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _LoginButton(),
-              const SizedBox(width: 20),
-              _SignUpButton(),
-            ],
-          )
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _EmailInput(),
+            const SizedBox(height: 20),
+            _PasswordInput(),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _LoginButton(),
+                const SizedBox(width: 20),
+                _SignUpButton(),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
