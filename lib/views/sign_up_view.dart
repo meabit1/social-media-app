@@ -21,6 +21,7 @@ class SignUpView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 300),
               const Text(
                 'Sign Up',
                 style: TextStyle(
@@ -62,26 +63,28 @@ class SignUpView extends StatelessWidget {
                 height: 20.0,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_emailController.text.isNotEmpty &&
-                            _passwordController.text.isNotEmpty &&
-                            _confirmPasswordController.text.isNotEmpty) {
-                          if (_passwordController.text ==
-                              _confirmPasswordController.text) {
-                            appController.sinUp(_emailController.text,
-                                _passwordController.text);
-                          }
-                        }
-                      },
-                      child: Obx(
-                        () => appController.isLoading
-                            ? const LoadingWidget()
-                            : const Text('Sign Up'),
-                      ),
-                    ),
+                  Obx(
+                    () {
+                      return appController.isLoading
+                          ? const LoadingWidget()
+                          : ElevatedButton(
+                              onPressed: () {
+                                if (_emailController.text.isNotEmpty &&
+                                    _passwordController.text.isNotEmpty &&
+                                    _confirmPasswordController
+                                        .text.isNotEmpty) {
+                                  if (_passwordController.text ==
+                                      _confirmPasswordController.text) {
+                                    appController.sinUp(_emailController.text,
+                                        _passwordController.text);
+                                  }
+                                }
+                              },
+                              child: const Text('Sign Up'),
+                            );
+                    },
                   ),
                   const SizedBox(
                     width: 10.0,

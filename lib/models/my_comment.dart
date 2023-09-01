@@ -20,4 +20,13 @@ class MyComment {
       createdAt: json['created_at'],
     );
   }
+
+  // implement to json method
+  Map<String, dynamic> toJson() {
+    return {
+      'user_email': userEmail,
+      'comment': comment,
+      'created_at': createdAt,
+    };
+  }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_firebase/models/my_comment.dart';
 import 'package:flutter_firebase/models/post.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +13,15 @@ class PostsController extends GetxController {
   // reactive fields
   final Rx<List<Post>> _posts = Rx<List<Post>>(<Post>[]);
   List<Post> get posts => _posts.value;
+  comment(Post post, MyComment comment) {
+    FirebaseFirestore.instance.collection(postsPath).doc(post.id).update({
+      'comments': [
+        ...post.comments.map((e) => (e as MyComment).toJson()).toList(),
+        comment.toJson()
+      ]
+    });
+  }
+
   post(Post post) {
     FirebaseFirestore.instance.collection(postsPath).add(post.toJson());
   }

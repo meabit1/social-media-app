@@ -19,6 +19,7 @@ class SignInView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 300),
               const Text(
                 'Sign In',
                 style: TextStyle(
@@ -53,23 +54,23 @@ class SignInView extends StatelessWidget {
                 height: 20.0,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_emailController.text.isEmpty ||
-                            _passwordController.text.isEmpty) return;
-                        appController.signIn(
-                          _emailController.text,
-                          _passwordController.text,
-                        );
-                      },
-                      child: Obx(
-                        () => appController.isLoading
-                            ? const LoadingWidget()
-                            : const Text('Sign In'),
-                      ),
-                    ),
+                  Obx(
+                    () {
+                      return appController.isLoading
+                          ? const LoadingWidget()
+                          : ElevatedButton(
+                              child: const Text('Sign In'),
+                              onPressed: () {
+                                if (_emailController.text.isEmpty ||
+                                    _passwordController.text.isEmpty) return;
+
+                                appController.signIn(_emailController.text,
+                                    _passwordController.text);
+                              },
+                            );
+                    },
                   ),
                   const SizedBox(
                     width: 10.0,

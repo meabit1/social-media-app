@@ -8,6 +8,7 @@ class Post {
   final Timestamp timestamp;
   final List<dynamic> likes;
   final List<dynamic> comments;
+  final String imageUrl;
   Post({
     this.id,
     required this.text,
@@ -15,6 +16,7 @@ class Post {
     required this.timestamp,
     required this.likes,
     required this.comments,
+    required this.imageUrl,
   });
 
   static Post fromJsonId(String id, Map<String, dynamic> data) {
@@ -31,6 +33,7 @@ class Post {
       timestamp: data['timestamp'],
       likes: data['likes'],
       comments: comments,
+      imageUrl: data['image_url'],
     );
   }
 

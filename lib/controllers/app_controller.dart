@@ -49,6 +49,7 @@ class AppController extends GetxController {
       } else {
         _appStatus.value = AppStatus.authanticated;
         currentUser = firebaseUser.toMyUser;
+        //   print(firebaseUser.email);
       }
     });
     super.onInit();
