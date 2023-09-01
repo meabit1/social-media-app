@@ -1,9 +1,11 @@
 import 'dart:async';
-
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_firebase/models/my_comment.dart';
 import 'package:flutter_firebase/models/post.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostsController extends GetxController {
   final String postsPath = 'posts';
@@ -20,6 +22,24 @@ class PostsController extends GetxController {
         comment.toJson()
       ]
     });
+  }
+
+  Future<String> uploadImage() async {
+    final ImagePicker imagePicker = ImagePicker();
+    final response = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (response == null) {
+      return '';
+    }
+    final file = File(response.path);
+    final ref =
+        FirebaseStorage.instance.ref().child('images/${DateTime.now()}.png');
+    final task = ref.putFile(file);
+    final snapshot = await task.whenComplete(() => null);
+    if (snapshot.state == TaskState.success) {
+      return await ref.getDownloadURL();
+    } else {
+      return '';
+    }
   }
 
   post(Post post) {

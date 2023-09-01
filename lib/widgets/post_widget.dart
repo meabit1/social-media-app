@@ -23,10 +23,12 @@ class PostWidget extends StatelessWidget {
               title: Text(postsController.posts[index].userEmail),
               subtitle: Text(postsController.posts[index].text),
             ),
-            SizedBox(
-              height: 200,
-              child: Image.network(postsController.posts[index].imageUrl),
-            ),
+            postsController.posts[index].imageUrl.isNotEmpty
+                ? SizedBox(
+                    height: 200,
+                    child: Image.network(postsController.posts[index].imageUrl),
+                  )
+                : Container(),
             Row(
               children: [
                 Obx(() {

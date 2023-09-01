@@ -18,10 +18,11 @@ class PostOrCommentTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final postsController = Get.find<PostsController>();
     final appController = Get.find<AppController>();
+    String imageUrl = '';
     return Row(
       children: [
         SizedBox(
-          width: Get.width - 70,
+          width: isPost ? Get.width - 120 : Get.width - 70,
           child: TextField(
             controller: _textController,
             decoration: InputDecoration(
@@ -43,8 +44,7 @@ class PostOrCommentTextWidget extends StatelessWidget {
                     timestamp: Timestamp.now(),
                     likes: [],
                     comments: [],
-                    imageUrl:
-                        'https://ling-app.com/wp-content/uploads/2022/11/Hi-In-Spanish-1024x538.jpg'),
+                    imageUrl: imageUrl),
               );
               _textController.clear();
             } else {
@@ -61,6 +61,13 @@ class PostOrCommentTextWidget extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_upward_sharp),
         ),
+        if (isPost)
+          IconButton(
+            onPressed: () async {
+              imageUrl = await postsController.uploadImage();
+            },
+            icon: const Icon(Icons.image),
+          )
       ],
     );
   }

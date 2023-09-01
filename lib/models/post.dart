@@ -45,6 +45,7 @@ class Post {
       'timestamp': timestamp,
       'likes': likes,
       'comments': comments,
+      'image_url': imageUrl,
     };
   }
 }

@@ -12,8 +12,10 @@ dependencies:
   get: 
   firebase_core: ^2.15.1
   firebase_auth: ^4.9.0
+  firebase_storage: ^11.2.6
   cloud_firestore: ^4.9.1
   expandable_tree_menu: ^0.1.0-dev.5
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
