@@ -26,7 +26,11 @@ class PostWidget extends StatelessWidget {
             postsController.posts[index].imageUrl.isNotEmpty
                 ? SizedBox(
                     height: 200,
-                    child: Image.network(postsController.posts[index].imageUrl),
+                    width: double.infinity,
+                    child: Image.network(
+                      postsController.posts[index].imageUrl,
+                      fit: BoxFit.fill,
+                    ),
                   )
                 : Container(),
             Row(
@@ -59,7 +63,9 @@ class PostWidget extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     // bottom sheet  for comments
-                    Get.to(() => CommentsBottomSheet(index: index));
+                    Get.to(() => CommentsBottomSheet(
+                          index: index,
+                        ));
                   },
                   icon: const Icon(Icons.comment),
                 ),

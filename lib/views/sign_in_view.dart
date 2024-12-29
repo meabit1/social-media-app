@@ -4,11 +4,20 @@ import 'package:flutter_firebase/views/sign_up_view.dart';
 import 'package:flutter_firebase/widgets/loading_widget.dart';
 import 'package:get/get.dart';
 
-class SignInView extends StatelessWidget {
-  SignInView({super.key});
+class SignInView extends StatefulWidget {
+  const SignInView({super.key});
+
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
   // controllers
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
+  bool isObsecure = true;
   @override
   Widget build(BuildContext context) {
     final appController = Get.find<AppController>();
@@ -42,39 +51,54 @@ class SignInView extends StatelessWidget {
               ),
               TextField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Password',
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isObsecure = !isObsecure;
+                      });
+                    },
+                    icon: isObsecure
+                        ? Icon(Icons.visibility_off)
+                        : Icon(Icons.visibility),
+                  ),
                 ),
+                obscureText: isObsecure,
               ),
               const SizedBox(
                 height: 20.0,
               ),
               const SizedBox(
                 height: 20.0,
+              ),
+              Obx(
+                () {
+                  if (appController.isLoading) return const LoadingWidget();
+                  return ElevatedButton(
+                    child: const Text('Sign In'),
+                    onPressed: () {
+                      if (_emailController.text.trim().isEmpty ||
+                          _passwordController.text.trim().isEmpty) {
+                        Get.snackbar(
+                            "Sign in failed", "All fields are required ");
+                        return;
+                      }
+
+                      appController.signIn(
+                          _emailController.text, _passwordController.text);
+                    },
+                  );
+                },
+              ),
+              const SizedBox(
+                width: 10.0,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Obx(
-                    () {
-                      return appController.isLoading
-                          ? const LoadingWidget()
-                          : ElevatedButton(
-                              child: const Text('Sign In'),
-                              onPressed: () {
-                                if (_emailController.text.isEmpty ||
-                                    _passwordController.text.isEmpty) return;
-
-                                appController.signIn(_emailController.text,
-                                    _passwordController.text);
-                              },
-                            );
-                    },
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
+                  Text("Or create new Acount"),
                   TextButton(
                     onPressed: () {
                       Get.off(() => SignUpView());

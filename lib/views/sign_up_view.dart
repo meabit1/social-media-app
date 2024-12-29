@@ -5,12 +5,27 @@ import 'package:get/get.dart';
 
 import '../widgets/loading_widget.dart';
 
-class SignUpView extends StatelessWidget {
-  SignUpView({super.key});
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
+
+  @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
   // controllers
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
   final _confirmPasswordController = TextEditingController();
+  bool isObsecure = true;
+  void toggleObsecure() {
+    setState(() {
+      isObsecure = !isObsecure;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final appController = Get.find<AppController>();
@@ -21,7 +36,7 @@ class SignUpView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 300),
+              const SizedBox(height: 200),
               const Text(
                 'Sign Up',
                 style: TextStyle(
@@ -44,9 +59,15 @@ class SignUpView extends StatelessWidget {
               ),
               TextField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
+                obscureText: isObsecure,
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Password',
+                  prefixIcon: IconButton(
+                      onPressed: toggleObsecure,
+                      icon: isObsecure
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility)),
                 ),
               ),
               const SizedBox(
@@ -54,41 +75,55 @@ class SignUpView extends StatelessWidget {
               ),
               TextField(
                 controller: _confirmPasswordController,
-                decoration: const InputDecoration(
+                obscureText: isObsecure,
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Confirm Password',
+                  prefixIcon: IconButton(
+                      onPressed: toggleObsecure,
+                      icon: isObsecure
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility)),
                 ),
               ),
               const SizedBox(
                 height: 20.0,
               ),
+              Obx(
+                () {
+                  return appController.isLoading
+                      ? const LoadingWidget()
+                      : ElevatedButton(
+                          onPressed: () {
+                            if (_emailController.text.trim().isEmpty ||
+                                _passwordController.text.trim().isEmpty ||
+                                _confirmPasswordController.text
+                                    .trim()
+                                    .isEmpty) {
+                              Get.snackbar(
+                                  "Sign up failed", "All fields are required");
+                              return;
+                            }
+                            if (_passwordController.text !=
+                                _confirmPasswordController.text) {
+                              Get.snackbar(
+                                  "Sign up failed", "Passwords dont match");
+                              return;
+                            }
+                            appController.sinUp(_emailController.text.trim(),
+                                _passwordController.text);
+                          },
+                          child: const Text('Sign Up'),
+                        );
+                },
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Obx(
-                    () {
-                      return appController.isLoading
-                          ? const LoadingWidget()
-                          : ElevatedButton(
-                              onPressed: () {
-                                if (_emailController.text.isNotEmpty &&
-                                    _passwordController.text.isNotEmpty &&
-                                    _confirmPasswordController
-                                        .text.isNotEmpty) {
-                                  if (_passwordController.text ==
-                                      _confirmPasswordController.text) {
-                                    appController.sinUp(_emailController.text,
-                                        _passwordController.text);
-                                  }
-                                }
-                              },
-                              child: const Text('Sign Up'),
-                            );
-                    },
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
+                  Text('Or login if you have one'),
                   TextButton(
                     onPressed: () {
                       Get.off(() => SignInView());

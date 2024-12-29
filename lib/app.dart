@@ -15,11 +15,8 @@ class App extends StatelessWidget {
       home: Obx(() {
         if (appController.appStatus == AppStatus.unauthenticated) {
           return SignInView();
-        } else if (appController.appStatus == AppStatus.authanticated) {
-          return const HomeView();
-        } else {
-          return Container();
         }
+        return const HomeView();
       }),
     );
   }

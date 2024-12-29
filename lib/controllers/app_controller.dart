@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_firebase/views/home_view.dart';
 import 'package:get/get.dart';
 
 import '../models/my_user.dart';
@@ -23,8 +24,12 @@ class AppController extends GetxController {
       _isLoading.value = true;
       await _firebaseInstance.createUserWithEmailAndPassword(
           email: email, password: password);
+      Get.off(() => HomeView());
+    } catch (_) {
+      Get.snackbar("Sign up failed", "Please enter valid credentials");
+    } finally {
       _isLoading.value = false;
-    } catch (_) {}
+    }
   }
 
   signIn(String email, String password) async {
@@ -32,8 +37,12 @@ class AppController extends GetxController {
       _isLoading.value = true;
       await _firebaseInstance.signInWithEmailAndPassword(
           email: email, password: password);
+      Get.off(() => HomeView());
+    } catch (_) {
+      Get.snackbar("Sign in failed", "You have entered invalid credentials");
+    } finally {
       _isLoading.value = false;
-    } catch (_) {}
+    }
   }
 
   signOut() {

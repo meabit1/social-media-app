@@ -9,18 +9,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get: 
-  firebase_core: ^2.15.1
-  firebase_auth: ^4.9.0
-  firebase_storage: ^11.2.6
-  cloud_firestore: ^4.9.1
+  get: ^4.6.6
+  firebase_core: ^3.9.0
+  firebase_auth: ^5.3.4
+  firebase_storage: ^12.3.7
+  cloud_firestore: ^5.6.0
   expandable_tree_menu: ^0.1.0-dev.5
   image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true

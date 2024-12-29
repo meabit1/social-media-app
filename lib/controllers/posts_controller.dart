@@ -15,10 +15,12 @@ class PostsController extends GetxController {
   // reactive fields
   final Rx<List<Post>> _posts = Rx<List<Post>>(<Post>[]);
   List<Post> get posts => _posts.value;
+  final RxBool _isLoading = false.obs;
+  bool get isLoading => _isLoading.value;
   comment(Post post, MyComment comment) {
     FirebaseFirestore.instance.collection(postsPath).doc(post.id).update({
       'comments': [
-        ...post.comments.map((e) => (e as MyComment).toJson()).toList(),
+        ...post.comments.map((e) => (e as MyComment).toJson()),
         comment.toJson()
       ]
     });
@@ -71,6 +73,7 @@ class PostsController extends GetxController {
   }
 
   void _subscribeToData() {
+    _isLoading.value = true;
     _streamSubscription = FirebaseFirestore.instance
         .collection(postsPath)
         .orderBy('timestamp', descending: true)
@@ -79,6 +82,7 @@ class PostsController extends GetxController {
       _posts.value = snapshot.docs
           .map((doc) => Post.fromJsonId(doc.id, doc.data()))
           .toList();
+      _isLoading.value = false;
     });
   }
 }
